@@ -21,6 +21,12 @@
 #import "RCTTextField.h"
 #endif
 
+#if __has_include(<React/RCTUITextView.h>)
+#import <React/RCTUITextView.h>
+#else
+#import "RCTUITextView.h"
+#endif
+
 #if __has_include(<React/RCTUITextField.h>)
 #import <React/RCTUITextField.h>
 #else
@@ -188,14 +194,14 @@ typedef NS_ENUM(NSUInteger, KeyboardTrackingScrollBehavior) {
 
         if ([subview isKindOfClass:[RCTTextField class]])
         {
-            [(RCTUITextField*)[(RCTTextField*)subview textField] setInputAccessoryView:[ObservingInputAccessoryView sharedInstance]];
-            [(RCTUITextField*)[(RCTTextField*)subview textField] reloadInputViews];
+            [(RCTUITextField*)[(RCTTextField*)subview backedTextInputView] setInputAccessoryView:[ObservingInputAccessoryView sharedInstance]];
+            [(RCTUITextField*)[(RCTTextField*)subview backedTextInputView] reloadInputViews];
 
             [_inputViewsMap setObject:subview forKey:@(kInputViewKey)];
         }
         else if ([subview isKindOfClass:[RCTTextView class]])
         {
-            UITextView *textView = [subview valueForKey:@"_textView"];
+            UITextView *textView = (RCTUITextView*)[(RCTTextView*)subview backedTextInputView];
             if (textView != nil)
             {
                 [textView setInputAccessoryView:[ObservingInputAccessoryView sharedInstance]];
